@@ -1,7 +1,19 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
-@*@model WebApp.Models.Image;*@
+﻿@using WebApp.Helpers
+@model WebApp.Models.ImageList
 @{
-    <img height= '30' width="30" src="@Url.Action("Index", "HomeController")" />
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+@foreach (var i in Model.Imageslist)
+{
+    <td>
+        @if (i != null)
+        {
+            <img src="@Url.Action("GetImage", "Home", new { id = i.Id })" />
+        }
+    </td>
+}
+<div class="pager">
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))
+</div>
