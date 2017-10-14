@@ -1,0 +1,14 @@
+﻿@model ImageGallery.Models.ImagesListViewModel
+
+@{ int count = 0; }
+
+@foreach (var image in Model.Images)
+{
+    <div class="col-sm-5 image_handler-@count">
+        <a href="@image.Image" data-lightbox="roadtrip" class="image-lightbox-@count">
+            <img class="img-thumbnail image-@count" src="@image.ImageSmall" alt="" style="margin-top: 2%">
+        </a>
+    </div>
+
+    count++;
+}

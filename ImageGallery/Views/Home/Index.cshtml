@@ -1,0 +1,31 @@
+﻿@model ImageGallery.Models.ImagesListViewModel
+@using ImageGallery.HtmlHelpers
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <button type="submit" class = "navbar-brand" onclick="location.href='@Url.Action("UploadImage", "Home")'">Add images</button>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="container">
+
+    <div class="row text-center">
+        @Html.Partial("~/Views/Home/_Images.cshtml", Model)
+    </div>
+    <hr/>
+    <ul class="pager">
+        @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+        {
+            <li>
+                @Ajax.ActionLink(i.ToString(), "Gallery", new { page = i }, 
+                    new AjaxOptions { HttpMethod = "GET", OnSuccess = "dataModule.backData" })
+            </li>
+        }
+    </ul>
+</div>

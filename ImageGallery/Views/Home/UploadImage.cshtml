@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Upload Image";
+}
+
+
+@using (Html.BeginForm("UploadImage", "Home", FormMethod.Post, new {enctype = "multipart/form-data"}))
+{
+    <div class="form-group btn btn-default text-center col-md-4 col-md-offset-4">
+        <input type="file" name="postedImage" value="Select a file"/>
+    </div>
+
+    <div class="row">
+        <button type="submit" class="btn btn-success text-center" style="margin-left: 2%">Save</button>
+    </div>
+    <div class="col-md-offset-4">
+        @Html.TextArea("Description", new { rows = 3, @class = "form-control", placeholder = "Descripton", style ="margin-top: 2%; max-width: 313px; align: center" })
+    </div>
+}

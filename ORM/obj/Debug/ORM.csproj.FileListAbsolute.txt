@@ -1,0 +1,10 @@
+C:\Users\Dzm\Desktop\ImageGallery\ORM\bin\Debug\ORM.dll.config
+C:\Users\Dzm\Desktop\ImageGallery\ORM\bin\Debug\ORM.dll
+C:\Users\Dzm\Desktop\ImageGallery\ORM\bin\Debug\ORM.pdb
+C:\Users\Dzm\Desktop\ImageGallery\ORM\bin\Debug\EntityFramework.dll
+C:\Users\Dzm\Desktop\ImageGallery\ORM\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Dzm\Desktop\ImageGallery\ORM\bin\Debug\EntityFramework.xml
+C:\Users\Dzm\Desktop\ImageGallery\ORM\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Dzm\Desktop\ImageGallery\ORM\obj\Debug\ORM.csprojResolveAssemblyReference.cache
+C:\Users\Dzm\Desktop\ImageGallery\ORM\obj\Debug\ORM.dll
+C:\Users\Dzm\Desktop\ImageGallery\ORM\obj\Debug\ORM.pdb

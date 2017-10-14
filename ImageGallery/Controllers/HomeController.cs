@@ -1,0 +1,101 @@
+﻿using ORM;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using ImageGallery.Mappers;
+using ImageGallery.Models;
+using ORM.Entities;
+
+namespace ImageGallery.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly ImageGalleryContext context = new ImageGalleryContext();
+        public int pageSize = 4;
+
+        public ActionResult Index()
+        {
+            return RedirectToAction("Gallery");
+        }
+
+        [HttpGet]
+        public ActionResult Gallery(int page = 1)
+        {
+            var model = new ImagesListViewModel
+            {
+                Images = context.Images.OrderBy(im => im.Id)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize).ToImageModel(),
+                PagingInfo = new PagingInfoModel
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = pageSize,
+                    TotalItems = context.Images.Count()
+                }
+            };
+
+            if (Request.IsAjaxRequest())
+            {
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+
+            return View("Index", model);
+        }
+
+        [HttpGet]
+        public ActionResult UploadImage()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UploadImage(HttpPostedFileBase postedImage, string description)
+        {
+            var newImage = new Image
+            {
+                BigImage = new byte[postedImage.ContentLength],
+                MimeType = postedImage.ContentType,
+                Description = description
+            };
+
+            postedImage.InputStream.Read(newImage.BigImage, 0, postedImage.ContentLength);
+
+            newImage.SmallImage = ResizeImage(newImage.BigImage);
+            context.Images.Add(newImage);
+            context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        private byte[] ResizeImage(byte[] arrayBytes)
+        {
+            var localMemStream = new System.IO.MemoryStream(arrayBytes);
+            var fullsizeImage = System.Drawing.Image.FromStream(localMemStream);
+            System.Drawing.Image newImage;
+            if (fullsizeImage.Height > fullsizeImage.Width) 
+                newImage = fullsizeImage.GetThumbnailImage(200, 300, null, IntPtr.Zero);
+            else newImage = fullsizeImage.GetThumbnailImage(300, 200, null, IntPtr.Zero);
+
+            var resultStream = new System.IO.MemoryStream();
+            newImage.Save(resultStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+            return resultStream.ToArray(); 
+        }
+
+        public FileResult GetFullImage(int id)
+        {
+            var image = context.Images.FirstOrDefault(im => im.Id == id);
+
+                return File(image.BigImage, image.MimeType);
+        }
+
+        public FileResult GetSmallImage(int id)
+        {
+            var image = context.Images.FirstOrDefault(im => im.Id == id);
+
+            return File(image.SmallImage, image.MimeType);
+        }
+    }
+}
